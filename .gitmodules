@@ -1,0 +1,6 @@
+[submodule "3rd/stm32-hal-cpp"]
+	path = 3rd/stm32-hal-cpp
+	url = https://github.com/mphhpm/stm32-hal-cpp.git
+[submodule "3rd/MiniSTM32H7xx"]
+	path = 3rd/MiniSTM32H7xx
+	url = https://github.com/WeActStudio/MiniSTM32H7xx.git
