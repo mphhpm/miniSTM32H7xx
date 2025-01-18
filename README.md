@@ -1,5 +1,5 @@
 # miniSTM32H7xx
-weact miniSTM32H7xx board
+Software development on weact miniSTM32H7xx board using eclipse & xpack gcc
 
 
 ## Tools ##
