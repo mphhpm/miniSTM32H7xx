@@ -1,0 +1,4 @@
+*.c linguist-detectable=true
+*.cpp linguist-detectable=true
+*.mk linguist-detectable=false
+Makefile* linguist-detectable=false
