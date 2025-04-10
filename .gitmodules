@@ -4,3 +4,6 @@
 [submodule "3rd/MiniSTM32H7xx"]
 	path = 3rd/MiniSTM32H7xx
 	url = https://github.com/WeActStudio/MiniSTM32H7xx.git
+[submodule "3rd/lvgl"]
+	path = 3rd/lvgl
+	url = https://github.com/lvgl/lvgl.git

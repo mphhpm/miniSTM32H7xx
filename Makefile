@@ -28,9 +28,15 @@ export DEVICE  = stm32h743vit6
 export STARTUP_SCRIPT=$(abspath startup_stm32h743vitx.s)
 export MCPU=cortex-m7
 export MFPU=fpv5-d16
-export LDFLAGS += -mcpu=$(MCPU) -mfpu=$(MFPU) 
-export CFLAGS  += -mcpu=$(MCPU) -mfpu=$(MFPU) 
+export LVGL_BUILD_DIR=$(abspath build/lvgl/$(DEVICE)/obj)
+export LVGL_OUTPUT_DIR=$(abspath build/lvgl/$(DEVICE)/bin) 
+export LVGL_PATH=$(abspath 3rd/lvgl)
+export LVGL_CFLAGS = -I$(LVGL_PATH)
+export LDFLAGS += -mcpu=$(MCPU) -mfpu=$(MFPU) -L$(LVGL_OUTPUT_DIR)
+export CFLAGS  += -mcpu=$(MCPU) -mfpu=$(MFPU) -DLV_CONF_PATH=$(abspath lv_conf.h) $(LVGL_CFLAGS)
 export CPPFLAGS+= -mcpu=$(MCPU) -mfpu=$(MFPU)
+##
+## lvgl
 
 CFLAGSADD="-DSTM32H743xx -DTFT96"
 ##
@@ -46,8 +52,22 @@ clean-lcd:
 	$(Q)$(MAKE) --file Makefile.modules.mk clean BUILD_DIR=$(abspath build/sdk/hal/stm32h743/03-lcd_test\obj) \
 				OUTPUT_DIR=$(abspath 3rd/MiniSTM32H7xx/build/sdk/hal/stm32h743/03-lcd_test\bin) \
 				PROJECT_DIR=$(abspath 3rd/MiniSTM32H7xx/sdk/hal/stm32h743/03-lcd_test) 
-	
 
+build-lvgl:
+	$(Q)$(MAKE) -f lvgl.mk -j 8 BUILD_DIR=$(LVGL_BUILD_DIR) OUTPUT_DIR=$(LVGL_OUTPUT_DIR) LVGL_PATH=$(LVGL_PATH) DEVICE=$(DEVICE)
+
+build_lvgl_demo:
+	$(Q)$(MAKE) --file Makefile.modules.mk BUILD_DIR=$(abspath build/stm32h743/lvgl_demo/obj) \
+				LV_CONF_PATH=$(abspath lv_conf.h) \
+				OUTPUT_DIR=$(abspath build/stm32h743/lvgl_demo/bin) \
+				LDLIBS=-lstm32h743vit6.lvgl \
+				MAKE_SYSTEM_DIR=$(MAKE_SYSTEM_DIR) PROJECT_DIR=$(abspath lvgl/lvgl_demo) \
+				CFLAGSADD=$(CFLAGSADD) \
+				PROJECT=lvgl_demo LDSCRIPT=$(abspath stm32h743vit6.ld)
+
+flash-lvgl_demo:
+	st-flash --connect-under-reset --reset write build/stm32h743/lvgl_demo/bin/lvgl_demo-stm32h743vit6.bin 0x8000000
+					
 flash-lcd:
 	st-flash --connect-under-reset --reset write build/sdk/hal/stm32h743/03-lcd_test\bin\lcd_test-stm32h743vit6.bin 0x8000000
 	
