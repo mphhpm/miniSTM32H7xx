@@ -122,42 +122,6 @@ static void LED_Blink(uint32_t Hdelay,uint32_t Ldelay)
 	HAL_Delay(Ldelay-1);
 }
 
-static void set_temp(void * bar, int32_t temp)
-{
-	lv_bar_t* bb = (lv_bar_t *)bar;
-    lv_bar_set_value((lv_obj_t*)bar, temp, LV_ANIM_OFF);
-}
-
-static void lvmy_example_bar_3(void)
-{
-    static lv_style_t style_indic;
-
-    lv_style_init(&style_indic);
-    lv_style_set_bg_opa(&style_indic, LV_OPA_COVER);
-    lv_style_set_bg_color(&style_indic, lv_palette_main(LV_PALETTE_RED));
-    lv_style_set_bg_grad_color(&style_indic, lv_palette_main(LV_PALETTE_BLUE));
-    lv_style_set_bg_grad_dir(&style_indic, LV_GRAD_DIR_VER);
-
-    lv_obj_t * bar = lv_bar_create(lv_screen_active());
-    lv_obj_add_style(bar, &style_indic, LV_PART_INDICATOR);
-    lv_obj_set_size(bar, 40, 40);
-    lv_obj_center(bar);
-    lv_bar_set_orientation(bar, LV_BAR_ORIENTATION_HORIZONTAL);
-    lv_bar_set_range(bar, -20, 20);
-    lv_bar_set_value(bar, 0, LV_ANIM_ON);
-
-    lv_anim_t a;
-    lv_anim_init(&a);
-    lv_anim_set_exec_cb(&a, set_temp);
-    lv_anim_set_duration(&a, 3000);
- //   lv_anim_set_reverse_duration(&a, 3000);
-    lv_anim_set_var(&a, bar);
-    lv_anim_set_values(&a, -20, 20);
-    lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE);
-    lv_anim_start(&a);
-}
-
-
 #define BUS_SPI1_POLL_TIMEOUT 500
 
 /* Platform-specific implementation of the LCD send command function. In general this should use polling transfer. */

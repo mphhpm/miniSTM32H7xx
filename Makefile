@@ -56,7 +56,7 @@ clean-lcd:
 build-lvgl:
 	$(Q)$(MAKE) -f lvgl.mk -j 8 BUILD_DIR=$(LVGL_BUILD_DIR) OUTPUT_DIR=$(LVGL_OUTPUT_DIR) LVGL_PATH=$(LVGL_PATH) DEVICE=$(DEVICE)
 
-build_lvgl_demo:
+build-lvgl_demo:
 	$(Q)$(MAKE) --file Makefile.modules.mk BUILD_DIR=$(abspath build/stm32h743/lvgl_demo/obj) \
 				LV_CONF_PATH=$(abspath lv_conf.h) \
 				OUTPUT_DIR=$(abspath build/stm32h743/lvgl_demo/bin) \
@@ -65,6 +65,11 @@ build_lvgl_demo:
 				CFLAGSADD=$(CFLAGSADD) \
 				PROJECT=lvgl_demo LDSCRIPT=$(abspath stm32h743vit6.ld)
 
+clean-lvgl_demo:
+	$(Q)$(MAKE) --file Makefile.modules.mk clean BUILD_DIR=$(abspath build/stm32h743/lvgl_demo/obj) \
+				OUTPUT_DIR=$(abspath build/stm32h743/lvgl_demo/bin) \
+				PROJECT_DIR=$(abspath lvgl/lvgl_demo)
+				
 flash-lvgl_demo:
 	st-flash --connect-under-reset --reset write build/stm32h743/lvgl_demo/bin/lvgl_demo-stm32h743vit6.bin 0x8000000
 					
